@@ -10,6 +10,8 @@ import {
   BILLING_OPTIONS, 
   PAYMENT_METHODS, 
   SEAT_PRICE_MONTHLY,
+  MINIMUM_SEATS,
+  SETUP_TRAINING_FEE,
   SIGNING_FEE_PERCENTAGE,
   type Deliverable,
   type BillingOption,
@@ -17,7 +19,7 @@ import {
 } from "../../../shared/pricing-config";
 
 export default function PricingCalculator() {
-  const [seats, setSeats] = useState(10);
+  const [seats, setSeats] = useState(MINIMUM_SEATS);
   const [selectedDeliverables, setSelectedDeliverables] = useState<string[]>([]);
   const [billingOption, setBillingOption] = useState("monthly");
   const [paymentMethod, setPaymentMethod] = useState("ach");
@@ -59,7 +61,7 @@ export default function PricingCalculator() {
       seatCost = annualTotal * discountMultiplier;
     }
     
-    const subtotal = seatCost + signingFee + deliverablesTotal;
+    const subtotal = seatCost + signingFee + deliverablesTotal + SETUP_TRAINING_FEE;
     
     // Apply payment method fees
     const paymentOpt = PAYMENT_METHODS.find(method => method.id === paymentMethod);
@@ -122,10 +124,11 @@ export default function PricingCalculator() {
                       id="seats"
                       type="number"
                       value={seats}
-                      onChange={(e) => setSeats(Math.max(1, parseInt(e.target.value) || 1))}
-                      min="1"
+                      onChange={(e) => setSeats(Math.max(MINIMUM_SEATS, parseInt(e.target.value) || MINIMUM_SEATS))}
+                      min={MINIMUM_SEATS}
                       className="border-input"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">Minimum {MINIMUM_SEATS} seats required</p>
                   </div>
                   <div>
                     <Label className="text-sm font-medium text-foreground mb-2 block">
@@ -238,7 +241,15 @@ export default function PricingCalculator() {
                   </div>
                   
                   <div>
-                    <div className="text-sm font-medium text-muted-foreground mb-2">One-Time Deliverables</div>
+                    <div className="text-sm font-medium text-muted-foreground mb-2">Setup & Training Fee</div>
+                    <div className="text-sm text-muted-foreground mb-1">Mandatory onboarding program</div>
+                    <div className="text-lg font-semibold text-foreground">
+                      ${SETUP_TRAINING_FEE.toLocaleString()}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="text-sm font-medium text-muted-foreground mb-2">Optional Deliverables</div>
                     <div className="text-lg font-semibold text-foreground">
                       ${deliverablesTotal.toLocaleString()}
                     </div>
@@ -299,7 +310,7 @@ export default function PricingCalculator() {
                       ${Math.round(calculateFirstYearTotal()).toLocaleString()}
                     </div>
                     <div className="text-xs opacity-75 mt-1">
-                      Seats + Setup + Deliverables + {
+                      Seats + Signing Fee + Setup/Training + Deliverables + {
                         PAYMENT_METHODS.find(m => m.id === paymentMethod)?.name || "Payment Fee"
                       }
                     </div>

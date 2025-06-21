@@ -22,6 +22,8 @@ export interface PaymentMethod {
 }
 
 export const SEAT_PRICE_MONTHLY = 75;
+export const MINIMUM_SEATS = 30;
+export const SETUP_TRAINING_FEE = 15000;
 
 export const DELIVERABLES: Deliverable[] = [
   {
@@ -47,12 +49,6 @@ export const DELIVERABLES: Deliverable[] = [
     name: "White Label Fee",
     description: "Complete branding customization and removal of our branding",
     price: 50000,
-  },
-  {
-    id: "setup",
-    name: "Setup / Training Fee",
-    description: "Complete onboarding and team training program",
-    price: 15000,
   },
 ];
 
