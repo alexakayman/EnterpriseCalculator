@@ -89,10 +89,13 @@ This is a full-stack React application built with Express.js backend that provid
 - **NODE_ENV**: Environment detection for development/production modes
 - **Session Management**: PostgreSQL-backed sessions for scalability
 
-## Changelog
+## Recent Changes
 
-Changelog:
-- June 21, 2025. Initial setup
+- June 21, 2025: Updated styling to match clean, modern reference design with light background and blue accents
+- June 21, 2025: Migrated from npm to bun runtime for improved performance
+- June 21, 2025: Restructured pricing calculator with enterprise-focused layout matching reference image
+- June 21, 2025: Added consistent pricing cards layout with Free, Pro, and Enterprise tiers
+- June 21, 2025: Initial setup
 
 ## User Preferences
 

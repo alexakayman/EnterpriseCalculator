@@ -108,33 +108,200 @@ export default function PricingCalculator() {
   };
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-gray-50">
+    <div className="min-h-screen py-12 px-4 bg-background">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-dark-blue mb-4">
-            Enterprise Pricing Calculator
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-foreground mb-6 leading-tight">
+            Start for free.<br />
+            Get used to winning.
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Configure your enterprise package with seats and deliverables to see real-time pricing across different billing options.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Whether you're using our platform for meetings, homework,
+            sales calls, or just curious, it's always free to start.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column - Configuration */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Seats Section */}
-            <Card className="shadow-lg border-gray-200 overflow-hidden">
-              <CardHeader className="bg-primary-blue text-white">
-                <CardTitle className="text-xl font-semibold flex items-center">
+        {/* Billing Toggle */}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex bg-muted rounded-lg p-1">
+            <button
+              onClick={() => setBillingOption("monthly")}
+              className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                billingOption === "monthly"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Monthly
+            </button>
+            <button
+              onClick={() => setBillingOption("annual")}
+              className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                billingOption === "annual"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Annually
+            </button>
+          </div>
+        </div>
+
+        {/* Pricing Cards */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Free Plan */}
+          <Card className="border border-border bg-card shadow-sm">
+            <CardContent className="p-8">
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold text-foreground mb-2">Free</h3>
+                <div className="text-3xl font-bold text-foreground">
+                  $0<span className="text-lg font-normal text-muted-foreground">/mo</span>
+                </div>
+              </div>
+              
+              <p className="text-muted-foreground mb-8 text-sm">
+                Get a taste for how Cluely works with a few responses on us.
+              </p>
+              
+              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 mb-6">
+                Download for Mac
+              </Button>
+              
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-foreground">5 pro responses per day</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-foreground">Unlimited access to free models</span>
+                    <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">GPT-4o mini</span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-foreground">100 character output limit</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Pro Plan */}
+          <Card className="border border-border bg-card shadow-sm">
+            <CardContent className="p-8">
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold text-foreground mb-2">Pro</h3>
+                <div className="text-3xl font-bold text-foreground">
+                  ${billingOption === "annual" ? "19" : "20"}
+                  <span className="text-lg font-normal text-muted-foreground">/mo</span>
+                </div>
+              </div>
+              
+              <p className="text-muted-foreground mb-8 text-sm">
+                Unlimited access to Cluely. Use the latest models, get full response output, and play with your own custom prompts.
+              </p>
+              
+              <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 mb-6">
+                Subscribe
+              </Button>
+              
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-foreground">Unlimited pro responses</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-foreground">Unlimited access to latest models</span>
+                    <span className="ml-2 bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">GPT-4o</span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-foreground">Full access to conversations dashboard</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Enterprise Plan */}
+          <Card className="border border-foreground bg-foreground text-background shadow-sm">
+            <CardContent className="p-8">
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold mb-2">Enterprise</h3>
+                <div className="text-2xl font-bold">Custom</div>
+              </div>
+              
+              <p className="text-background/70 mb-8 text-sm">
+                Specifically made for teams who need full customization.
+              </p>
+              
+              <Button className="w-full bg-background text-foreground hover:bg-background/90 mb-6">
+                Talk to Sales
+              </Button>
+              
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span>Custom integrations</span>
+                    <span className="ml-2 bg-background/20 text-background text-xs px-2 py-1 rounded">Coming soon</span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span>User provisioning & role-based access</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span>Advanced Post-call analytics</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Enterprise Configuration Section */}
+        <div className="mt-16 max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-foreground mb-4">Enterprise Configuration</h2>
+            <p className="text-muted-foreground">Customize your enterprise package with seats and deliverables</p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Seats Configuration */}
+            <Card className="border border-border bg-card shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-foreground flex items-center">
                   <Users className="mr-3 h-5 w-5" />
                   Seats Configuration
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
-                <div className="grid md:grid-cols-2 gap-6">
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="seats" className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label htmlFor="seats" className="text-sm font-medium text-foreground mb-2 block">
                       Number of Seats
                     </Label>
                     <Input
@@ -143,34 +310,34 @@ export default function PricingCalculator() {
                       value={seats}
                       onChange={(e) => setSeats(Math.max(1, parseInt(e.target.value) || 1))}
                       min="1"
-                      className="px-4 py-3 border-gray-300 focus:ring-2 focus:ring-primary-blue focus:border-primary-blue"
+                      className="border-input"
                     />
                   </div>
                   <div>
-                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label className="text-sm font-medium text-foreground mb-2 block">
                       Seat Price (Monthly)
                     </Label>
                     <div className="relative">
-                      <span className="absolute left-3 top-3 text-gray-500">$</span>
+                      <span className="absolute left-3 top-3 text-muted-foreground">$</span>
                       <Input
                         value={seatPrice}
                         readOnly
-                        className="pl-8 pr-4 py-3 border-gray-300 bg-gray-50 text-gray-700"
+                        className="pl-8 bg-muted border-input"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-6 grid md:grid-cols-2 gap-6">
-                  <div className="bg-light-blue rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-700 mb-1">Total Monthly</div>
-                    <div className="text-2xl font-bold primary-blue">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-muted rounded-lg p-4">
+                    <div className="text-sm font-medium text-muted-foreground mb-1">Total Monthly</div>
+                    <div className="text-2xl font-bold text-foreground">
                       ${monthlyTotal.toLocaleString()}
                     </div>
                   </div>
-                  <div className="bg-light-blue rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-700 mb-1">Total Annual</div>
-                    <div className="text-2xl font-bold primary-blue">
+                  <div className="bg-muted rounded-lg p-4">
+                    <div className="text-sm font-medium text-muted-foreground mb-1">Total Annual</div>
+                    <div className="text-2xl font-bold text-foreground">
                       ${annualTotal.toLocaleString()}
                     </div>
                   </div>
@@ -179,49 +346,48 @@ export default function PricingCalculator() {
             </Card>
 
             {/* Deliverables Section */}
-            <Card className="shadow-lg border-gray-200 overflow-hidden">
-              <CardHeader className="bg-secondary-blue text-white">
-                <CardTitle className="text-xl font-semibold flex items-center">
+            <Card className="border border-border bg-card shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-foreground flex items-center">
                   <Settings className="mr-3 h-5 w-5" />
                   Deliverables & Add-ons
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent>
                 <div className="space-y-4">
                   {deliverables.map((deliverable) => (
                     <div
                       key={deliverable.id}
-                      className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/50 transition-colors"
                     >
-                      <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-3">
                         <Checkbox
                           id={deliverable.id}
                           checked={selectedDeliverables.includes(deliverable.id)}
                           onCheckedChange={(checked) =>
                             handleDeliverableChange(deliverable.id, checked as boolean)
                           }
-                          className="w-5 h-5"
                         />
                         <div>
-                          <Label htmlFor={deliverable.id} className="font-medium text-gray-900 cursor-pointer">
+                          <Label htmlFor={deliverable.id} className="font-medium text-foreground cursor-pointer text-sm">
                             {deliverable.name}
                           </Label>
-                          <p className="text-sm text-gray-600">{deliverable.description}</p>
+                          <p className="text-xs text-muted-foreground">{deliverable.description}</p>
                         </div>
                       </div>
-                      <span className="font-semibold text-gray-900">
+                      <span className="font-semibold text-foreground text-sm">
                         ${deliverable.price.toLocaleString()}
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-200">
-                  <div className="bg-light-blue rounded-lg p-4">
-                    <div className="text-sm font-medium text-gray-700 mb-1">
+                <div className="mt-6 pt-4 border-t border-border">
+                  <div className="bg-muted rounded-lg p-4">
+                    <div className="text-sm font-medium text-muted-foreground mb-1">
                       Selected Deliverables Total
                     </div>
-                    <div className="text-2xl font-bold secondary-blue">
+                    <div className="text-2xl font-bold text-foreground">
                       ${deliverablesTotal.toLocaleString()}
                     </div>
                   </div>
@@ -230,110 +396,83 @@ export default function PricingCalculator() {
             </Card>
           </div>
 
-          {/* Right Column - Calculator Summary */}
-          <div className="lg:col-span-1">
-            <Card className="shadow-lg border-gray-200 overflow-hidden sticky top-8">
-              <CardHeader className="bg-gradient-to-r from-primary-blue to-secondary-blue text-white">
-                <CardTitle className="text-xl font-semibold flex items-center">
-                  <Calculator className="mr-3 h-5 w-5" />
-                  Billing Options
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                {/* Signing Confirmation */}
-                <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                  <div className="text-sm font-medium text-gray-700 mb-2">
-                    Signing Confirmation & Setup
-                  </div>
-                  <div className="text-sm text-gray-600 mb-2">10% of annual seat cost</div>
-                  <div className="text-lg font-semibold text-gray-900">
-                    ${signingFee.toLocaleString()}
-                  </div>
-                </div>
-
-                {/* One-Time Deliverables */}
-                <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                  <div className="text-sm font-medium text-gray-700 mb-2">One-Time Deliverables</div>
-                  <div className="text-lg font-semibold text-gray-900">
-                    ${deliverablesTotal.toLocaleString()}
-                  </div>
-                </div>
-
-                {/* Billing Options */}
-                <RadioGroup value={billingOption} onValueChange={setBillingOption} className="space-y-4">
-                  {/* Monthly */}
-                  <div className={`border rounded-lg p-4 hover:border-primary-blue hover:bg-light-blue/20 transition-all cursor-pointer ${
-                    billingOption === "monthly" ? "border-primary-blue bg-light-blue/20" : "border-gray-200"
-                  }`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="font-semibold text-gray-900">Monthly Pricing</div>
-                      <RadioGroupItem value="monthly" />
+          {/* Billing Summary */}
+          <Card className="mt-8 border border-border bg-card shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-foreground flex items-center">
+                <Calculator className="mr-3 h-5 w-5" />
+                Enterprise Billing Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="space-y-4">
+                  <div>
+                    <div className="text-sm font-medium text-muted-foreground mb-2">
+                      Signing Confirmation & Setup
                     </div>
-                    <div className="text-sm text-gray-600 mb-2">Billed monthly</div>
-                    <div className="text-xl font-bold primary-blue">
+                    <div className="text-sm text-muted-foreground mb-1">10% of annual seat cost</div>
+                    <div className="text-lg font-semibold text-foreground">
+                      ${signingFee.toLocaleString()}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="text-sm font-medium text-muted-foreground mb-2">One-Time Deliverables</div>
+                    <div className="text-lg font-semibold text-foreground">
+                      ${deliverablesTotal.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="text-sm font-medium text-muted-foreground mb-2">Billing Options</div>
+                  
+                  <div className={`border rounded-lg p-3 cursor-pointer transition-colors ${
+                    billingOption === "monthly" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                  }`} onClick={() => setBillingOption("monthly")}>
+                    <div className="font-medium text-foreground text-sm">Monthly Pricing</div>
+                    <div className="text-lg font-bold text-foreground">
                       ${monthlyTotal.toLocaleString()}/month
                     </div>
                   </div>
-
-                  {/* Quarterly */}
-                  <div className={`border rounded-lg p-4 hover:border-primary-blue hover:bg-light-blue/20 transition-all cursor-pointer ${
-                    billingOption === "quarterly" ? "border-primary-blue bg-light-blue/20" : "border-gray-200"
-                  }`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="font-semibold text-gray-900">Quarterly Installments</div>
-                      <RadioGroupItem value="quarterly" />
-                    </div>
-                    <div className="text-sm text-gray-600 mb-1">5% off annual (4 payments)</div>
-                    <div className="text-sm text-green-600 mb-2">
-                      Save ${(annualTotal * 0.05).toLocaleString()}/year
-                    </div>
-                    <div className="text-xl font-bold primary-blue">
+                  
+                  <div className={`border rounded-lg p-3 cursor-pointer transition-colors ${
+                    billingOption === "quarterly" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                  }`} onClick={() => setBillingOption("quarterly")}>
+                    <div className="font-medium text-foreground text-sm">Quarterly (5% off)</div>
+                    <div className="text-lg font-bold text-foreground">
                       ${Math.round((annualTotal * 0.95) / 4).toLocaleString()}/quarter
                     </div>
                   </div>
-
-                  {/* Annual */}
-                  <div className={`border rounded-lg p-4 hover:border-primary-blue hover:bg-light-blue/20 transition-all cursor-pointer ${
-                    billingOption === "annual" ? "border-primary-blue bg-light-blue/20" : "border-gray-200"
-                  }`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="font-semibold text-gray-900">Annual Upfront</div>
-                      <RadioGroupItem value="annual" />
-                    </div>
-                    <div className="text-sm text-gray-600 mb-1">10% off annual</div>
-                    <div className="text-sm text-green-600 mb-2">
-                      Save ${(annualTotal * 0.1).toLocaleString()}/year
-                    </div>
-                    <div className="text-xl font-bold primary-blue">
+                  
+                  <div className={`border rounded-lg p-3 cursor-pointer transition-colors ${
+                    billingOption === "annual" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                  }`} onClick={() => setBillingOption("annual")}>
+                    <div className="font-medium text-foreground text-sm">Annual (10% off)</div>
+                    <div className="text-lg font-bold text-foreground">
                       ${(annualTotal * 0.9).toLocaleString()}/year
                     </div>
                   </div>
-                </RadioGroup>
+                </div>
 
-                {/* Total Summary */}
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <div className="bg-gradient-to-r from-primary-blue to-secondary-blue text-white rounded-lg p-4">
+                <div>
+                  <div className="bg-foreground text-background rounded-lg p-4">
                     <div className="text-sm opacity-90 mb-1">Total First Year Cost</div>
                     <div className="text-2xl font-bold">
                       ${calculateFirstYearTotal().toLocaleString()}
                     </div>
                     <div className="text-xs opacity-75 mt-1">Seats + Setup + Deliverables</div>
                   </div>
-                </div>
-
-                {/* Contact CTA */}
-                <div className="mt-6">
-                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 transition-colors">
+                  
+                  <Button className="w-full mt-4 bg-primary text-primary-foreground hover:bg-primary/90">
                     <Phone className="mr-2 h-4 w-4" />
                     Contact Sales Team
                   </Button>
-                  <p className="text-xs text-gray-500 mt-2 text-center">
-                    Get a custom quote and finalize your package
-                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
