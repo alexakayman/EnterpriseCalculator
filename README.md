@@ -1,37 +1,5 @@
 # Enterprise Pricing Calculator - Developer Guide
 
-## Overview
-
-This is a full-stack React application that provides a configurable enterprise pricing calculator with seat-based pricing and deliverable add-ons. The application allows users to configure enterprise packages with real-time pricing calculations across different billing periods (monthly, quarterly, annual).
-
-## 🎯 Key Features
-
-- **Seat-based Pricing**: Configurable per-seat pricing with minimum seat requirements
-- **Deliverable Add-ons**: Modular add-on system for enterprise features
-- **Flexible Billing**: Multiple billing options with automatic discount calculations
-- **Payment Methods**: Support for different payment methods with fee calculations
-- **Real-time Updates**: Instant price calculations as users modify selections
-
-## 🏗️ Architecture
-
-### Frontend Stack
-
-- **React 18** with TypeScript
-- **Vite** for fast development and optimized builds
-- **Shadcn/ui** component library built on Radix UI primitives
-- **Tailwind CSS** for styling
-- **TanStack Query** for server state management
-- **Wouter** for lightweight client-side routing
-
-### Backend Stack
-
-- **Node.js 20** with Express.js
-- **TypeScript** with ESM modules
-- **PostgreSQL 16** with Drizzle ORM
-- **Neon Database** (serverless PostgreSQL)
-
-## 🚀 Quick Start
-
 ### Prerequisites
 
 - **Bun** (recommended) or Node.js 20+
