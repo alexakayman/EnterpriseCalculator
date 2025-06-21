@@ -91,6 +91,8 @@ This is a full-stack React application built with Express.js backend that provid
 
 ## Recent Changes
 
+- June 21, 2025: Changed font from Inter to Aeonik throughout the application
+- June 21, 2025: Fixed billing calculation logic for monthly, quarterly, and annual options
 - June 21, 2025: Enforced 30 seat minimum requirement with validation
 - June 21, 2025: Made Setup & Training fee ($15k) mandatory, moved out of optional deliverables
 - June 21, 2025: Created separate pricing configuration file (shared/pricing-config.ts) for easy management of pricing options

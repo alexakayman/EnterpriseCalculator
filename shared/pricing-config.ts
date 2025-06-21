@@ -23,32 +23,38 @@ export interface PaymentMethod {
 
 export const SEAT_PRICE_MONTHLY = 75;
 export const MINIMUM_SEATS = 30;
-export const SETUP_TRAINING_FEE = 15000;
+export const SETUP_TRAINING_FEE = 10000;
 
 export const DELIVERABLES: Deliverable[] = [
   {
     id: "multilingual",
     name: "Multi-Lingual Integration",
-    description: "Full localization support for global deployment",
+    description: "Full localization support for real-time assistance in any language.",
     price: 10000,
   },
   {
     id: "phi",
     name: "PHI Compliance Integration",
-    description: "Protected Health Information compliance setup",
+    description: "Protected Health Information compliance setup, without full HIPAA.",
     price: 25000,
   },
   {
     id: "hipaa",
     name: "HIPAA Compliance Integration", 
-    description: "Complete HIPAA compliance implementation",
-    price: 25000,
+    description: "Complete HIPAA compliance implementation, including PHI.",
+    price: 35000,
+  },
+  {
+    id: "custom",
+    name: "Custom Feature",
+    description: "Talk to our sales team for a custom engineering deliverable. Minimum $50k.",
+    price: 50000,
   },
   {
     id: "whitelabel",
     name: "White Label Fee",
-    description: "Complete branding customization and removal of our branding",
-    price: 50000,
+    description: "Complete branding customization and removal of our branding.",
+    price: 100000,
   },
 ];
 
