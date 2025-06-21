@@ -21,7 +21,7 @@ import {
 export default function PricingCalculator() {
   const [seats, setSeats] = useState(MINIMUM_SEATS);
   const [selectedDeliverables, setSelectedDeliverables] = useState<string[]>(
-    [],
+    []
   );
   const [billingOption, setBillingOption] = useState("monthly");
   const [paymentMethod, setPaymentMethod] = useState("ach");
@@ -73,7 +73,7 @@ export default function PricingCalculator() {
 
     // Apply payment method fees
     const paymentOpt = PAYMENT_METHODS.find(
-      (method) => method.id === paymentMethod,
+      (method) => method.id === paymentMethod
     );
     if (!paymentOpt) return subtotal;
 
@@ -91,7 +91,7 @@ export default function PricingCalculator() {
       setSelectedDeliverables((prev) => [...prev, deliverableId]);
     } else {
       setSelectedDeliverables((prev) =>
-        prev.filter((id) => id !== deliverableId),
+        prev.filter((id) => id !== deliverableId)
       );
     }
   };
@@ -110,163 +110,19 @@ export default function PricingCalculator() {
             Enterprise Pricing Calculator
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Customize your enterprise package with seats and deliverables to see
-            real-time pricing.
+            An enterprise pricing calculator with advancing billing, one-time
+            deliverables, and payment method toggles.
           </p>
         </div>
 
         {/* Enterprise Configuration Section */}
-        <div className="max-w-4xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Seats Configuration */}
-            <Card className="border border-border bg-card shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-foreground flex items-center">
-                  <Users className="mr-3 h-5 w-5" />
-                  Seats Configuration
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label
-                      htmlFor="seats"
-                      className="text-sm font-medium text-foreground mb-2 block"
-                    >
-                      Number of Seats
-                    </Label>
-                    <Input
-                      id="seats"
-                      type="number"
-                      value={seats}
-                      onChange={(e) =>
-                        setSeats(
-                          Math.max(
-                            MINIMUM_SEATS,
-                            parseInt(e.target.value) || MINIMUM_SEATS,
-                          ),
-                        )
-                      }
-                      min={MINIMUM_SEATS}
-                      className="border-input"
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Minimum {MINIMUM_SEATS} seats required
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-foreground mb-2 block">
-                      Seat Price (Monthly)
-                    </Label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-3 text-muted-foreground">
-                        $
-                      </span>
-                      <Input
-                        value={seatPrice}
-                        readOnly
-                        className="pl-8 bg-muted border-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-muted rounded-lg p-4">
-                    <div className="text-sm font-medium text-muted-foreground mb-1">
-                      Total Monthly
-                    </div>
-                    <div className="text-2xl font-bold text-foreground">
-                      ${monthlyTotal.toLocaleString()}
-                    </div>
-                  </div>
-                  <div className="bg-muted rounded-lg p-4">
-                    <div className="text-sm font-medium text-muted-foreground mb-1">
-                      Total Annual
-                    </div>
-                    <div className="text-2xl font-bold text-foreground">
-                      ${annualTotal.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Deliverables Section */}
-            <Card className="border border-border bg-card shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-xl font-semibold text-foreground flex items-center">
-                  <Settings className="mr-3 h-5 w-5" />
-                  Deliverables & Add-ons
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {DELIVERABLES.map((deliverable) => (
-                    <div
-                      key={deliverable.id}
-                      className={`flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer ${
-                        selectedDeliverables.includes(deliverable.id)
-                          ? "border-primary bg-primary/5"
-                          : "border-border"
-                      }`}
-                      onClick={() =>
-                        handleDeliverableChange(
-                          deliverable.id,
-                          !selectedDeliverables.includes(deliverable.id),
-                        )
-                      }
-                    >
-                      <div className="flex-1">
-                        <div className="font-medium text-foreground text-sm mb-1">
-                          {deliverable.name}
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          {deliverable.description}
-                        </p>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <span className="font-semibold text-foreground text-sm">
-                          ${deliverable.price.toLocaleString()}
-                        </span>
-                        <Checkbox
-                          id={deliverable.id}
-                          checked={selectedDeliverables.includes(
-                            deliverable.id,
-                          )}
-                          onCheckedChange={(checked) =>
-                            handleDeliverableChange(
-                              deliverable.id,
-                              checked as boolean,
-                            )
-                          }
-                          onClick={(e) => e.stopPropagation()}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-border">
-                  <div className="bg-muted rounded-lg p-4">
-                    <div className="text-sm font-medium text-muted-foreground mb-1">
-                      Selected Deliverables Total
-                    </div>
-                    <div className="text-2xl font-bold text-foreground">
-                      ${deliverablesTotal.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
+        <div className="max-w-4xl mx-auto gap-8">
           {/* Billing Summary */}
-          <Card className="mt-8 border border-border bg-card shadow-sm">
+          <Card className="mt-8 mb-8 border border-border bg-card shadow-sm">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-foreground flex items-center">
                 <Calculator className="mr-3 h-5 w-5" />
-                Enterprise Billing Summary
+                Billing Summary
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -352,14 +208,14 @@ export default function PricingCalculator() {
                       <div className="text-lg font-bold text-foreground">
                         $
                         {Math.round(
-                          calculateBillingAmount(option.id),
+                          calculateBillingAmount(option.id)
                         ).toLocaleString()}
                         /
                         {option.paymentSchedule === "quarterly"
                           ? "quarter"
                           : option.paymentSchedule === "annual"
-                            ? "year"
-                            : "month"}
+                          ? "year"
+                          : "month"}
                       </div>
                     </div>
                   ))}
@@ -388,6 +244,150 @@ export default function PricingCalculator() {
               </div>
             </CardContent>
           </Card>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Seats Configuration */}
+            <Card className="border border-border bg-card shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-foreground flex items-center">
+                  <Users className="mr-3 h-5 w-5" />
+                  Seats Configuration
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label
+                      htmlFor="seats"
+                      className="text-sm font-medium text-foreground mb-2 block"
+                    >
+                      Number of Seats
+                    </Label>
+                    <Input
+                      id="seats"
+                      type="number"
+                      value={seats}
+                      onChange={(e) =>
+                        setSeats(
+                          Math.max(
+                            MINIMUM_SEATS,
+                            parseInt(e.target.value) || MINIMUM_SEATS
+                          )
+                        )
+                      }
+                      min={MINIMUM_SEATS}
+                      className="border-input"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Minimum {MINIMUM_SEATS} seats required
+                    </p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-foreground mb-2 block">
+                      Seat Price (Monthly)
+                    </Label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-3 text-muted-foreground">
+                        $
+                      </span>
+                      <Input
+                        value={seatPrice}
+                        readOnly
+                        className="pl-8 bg-muted border-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-muted rounded-lg p-4">
+                    <div className="text-sm font-medium text-muted-foreground mb-1">
+                      Total Monthly
+                    </div>
+                    <div className="text-2xl font-bold text-foreground">
+                      ${monthlyTotal.toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="bg-muted rounded-lg p-4">
+                    <div className="text-sm font-medium text-muted-foreground mb-1">
+                      Total Annual
+                    </div>
+                    <div className="text-2xl font-bold text-foreground">
+                      ${annualTotal.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Deliverables Section */}
+            <Card className="border border-border bg-card shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-foreground flex items-center">
+                  <Settings className="mr-3 h-5 w-5" />
+                  Deliverables & Add-ons
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {DELIVERABLES.map((deliverable) => (
+                    <div
+                      key={deliverable.id}
+                      className={`flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer ${
+                        selectedDeliverables.includes(deliverable.id)
+                          ? "border-primary bg-primary/5"
+                          : "border-border"
+                      }`}
+                      onClick={() =>
+                        handleDeliverableChange(
+                          deliverable.id,
+                          !selectedDeliverables.includes(deliverable.id)
+                        )
+                      }
+                    >
+                      <div className="flex-1">
+                        <div className="font-medium text-foreground text-sm mb-1">
+                          {deliverable.name}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {deliverable.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <span className="font-semibold text-foreground text-sm">
+                          ${deliverable.price.toLocaleString()}
+                        </span>
+                        <Checkbox
+                          id={deliverable.id}
+                          checked={selectedDeliverables.includes(
+                            deliverable.id
+                          )}
+                          onCheckedChange={(checked) =>
+                            handleDeliverableChange(
+                              deliverable.id,
+                              checked as boolean
+                            )
+                          }
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-border">
+                  <div className="bg-muted rounded-lg p-4">
+                    <div className="text-sm font-medium text-muted-foreground mb-1">
+                      Selected Deliverables Total
+                    </div>
+                    <div className="text-2xl font-bold text-foreground">
+                      ${deliverablesTotal.toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

@@ -17,37 +17,46 @@ export interface PaymentMethod {
   id: string;
   name: string;
   description: string;
-  feeType: 'fixed' | 'percentage';
+  feeType: "fixed" | "percentage";
   feeAmount: number;
 }
 
-export const SEAT_PRICE_MONTHLY = 75;
+export const SEAT_PRICE_MONTHLY = 100;
 export const MINIMUM_SEATS = 30;
-export const SETUP_TRAINING_FEE = 10000;
+export const SETUP_TRAINING_FEE = 5000;
 
 export const DELIVERABLES: Deliverable[] = [
   {
+    id: "byok",
+    name: "Bring Your Own Keys",
+    description: "Full localized keys and custom AI controls.",
+    price: 5000,
+  },
+  {
     id: "multilingual",
     name: "Multi-Lingual Integration",
-    description: "Full localization support for real-time assistance in any language.",
+    description:
+      "Full localization support for real-time assistance in any language.",
     price: 10000,
   },
   {
     id: "phi",
     name: "PHI Compliance Integration",
-    description: "Protected Health Information compliance setup, without full HIPAA.",
+    description:
+      "Protected Health Information compliance setup, without full HIPAA.",
     price: 25000,
   },
   {
     id: "hipaa",
-    name: "HIPAA Compliance Integration", 
+    name: "HIPAA Compliance Integration",
     description: "Complete HIPAA compliance implementation, including PHI.",
     price: 35000,
   },
   {
     id: "custom",
     name: "Custom Feature",
-    description: "Talk to our sales team for a custom engineering deliverable. Minimum $50k.",
+    description:
+      "Talk to our sales team for a custom engineering deliverable. Minimum $50k.",
     price: 50000,
   },
   {
