@@ -34,13 +34,15 @@ export default function PricingCalculator() {
     return total + (deliverable?.price || 0);
   }, 0);
 
-  const calculateBillingAmount = () => {
-    const option = BILLING_OPTIONS.find(opt => opt.id === billingOption);
+  const calculateBillingAmount = (optionId: string) => {
+    const option = BILLING_OPTIONS.find(opt => opt.id === optionId);
     if (!option) return monthlyTotal;
     
     const discountMultiplier = 1 - (option.discountPercentage / 100);
     
     switch (option.paymentSchedule) {
+      case "monthly":
+        return monthlyTotal;
       case "quarterly":
         return (annualTotal * discountMultiplier) / 4;
       case "annual":
@@ -297,7 +299,7 @@ export default function PricingCalculator() {
                         {option.discountPercentage > 0 && ` (${option.discountPercentage}% off)`}
                       </div>
                       <div className="text-lg font-bold text-foreground">
-                        ${Math.round(calculateBillingAmount()).toLocaleString()}/{option.paymentSchedule === "quarterly" ? "quarter" : option.paymentSchedule === "annual" ? "year" : "month"}
+                        ${Math.round(calculateBillingAmount(option.id)).toLocaleString()}/{option.paymentSchedule === "quarterly" ? "quarter" : option.paymentSchedule === "annual" ? "year" : "month"}
                       </div>
                     </div>
                   ))}
