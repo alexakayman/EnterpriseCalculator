@@ -91,10 +91,12 @@ This is a full-stack React application built with Express.js backend that provid
 
 ## Recent Changes
 
+- June 21, 2025: Created separate pricing configuration file (shared/pricing-config.ts) for easy management of pricing options
+- June 21, 2025: Removed standard pricing table, focused on enterprise configuration only
+- June 21, 2025: Made deliverable cards fully clickable with checkbox moved to right side
+- June 21, 2025: Added payment method selection with ACH ($5 fee) and Credit Card (3% fee) options
 - June 21, 2025: Updated styling to match clean, modern reference design with light background and blue accents
-- June 21, 2025: Migrated from npm to bun runtime for improved performance
 - June 21, 2025: Restructured pricing calculator with enterprise-focused layout matching reference image
-- June 21, 2025: Added consistent pricing cards layout with Free, Pro, and Enterprise tiers
 - June 21, 2025: Initial setup
 
 ## User Preferences

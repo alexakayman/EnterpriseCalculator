@@ -1,51 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Users, Settings, Calculator, Phone } from "lucide-react";
-
-interface Deliverable {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-}
-
-const deliverables: Deliverable[] = [
-  {
-    id: "multilingual",
-    name: "Multi-Lingual Integration",
-    description: "Full localization support for global deployment",
-    price: 10000,
-  },
-  {
-    id: "phi",
-    name: "PHI Compliance Integration",
-    description: "Protected Health Information compliance setup",
-    price: 25000,
-  },
-  {
-    id: "hipaa",
-    name: "HIPAA Compliance Integration",
-    description: "Complete HIPAA compliance implementation",
-    price: 25000,
-  },
-  {
-    id: "whitelabel",
-    name: "White Label Fee",
-    description: "Complete branding customization and removal of our branding",
-    price: 50000,
-  },
-  {
-    id: "setup",
-    name: "Setup / Training Fee",
-    description: "Complete onboarding and team training program",
-    price: 15000,
-  },
-];
+import { 
+  DELIVERABLES, 
+  BILLING_OPTIONS, 
+  PAYMENT_METHODS, 
+  SEAT_PRICE_MONTHLY,
+  SIGNING_FEE_PERCENTAGE,
+  type Deliverable,
+  type BillingOption,
+  type PaymentMethod
+} from "../../../shared/pricing-config";
 
 export default function PricingCalculator() {
   const [seats, setSeats] = useState(10);
@@ -53,47 +22,55 @@ export default function PricingCalculator() {
   const [billingOption, setBillingOption] = useState("monthly");
   const [paymentMethod, setPaymentMethod] = useState("ach");
 
-  const seatPrice = 75;
+  const seatPrice = SEAT_PRICE_MONTHLY;
   const monthlyTotal = seats * seatPrice;
   const annualTotal = monthlyTotal * 12;
-  const signingFee = annualTotal * 0.1;
+  const signingFee = annualTotal * (SIGNING_FEE_PERCENTAGE / 100);
 
   const deliverablesTotal = selectedDeliverables.reduce((total, id) => {
-    const deliverable = deliverables.find(d => d.id === id);
+    const deliverable = DELIVERABLES.find(d => d.id === id);
     return total + (deliverable?.price || 0);
   }, 0);
 
   const calculateBillingAmount = () => {
-    switch (billingOption) {
+    const option = BILLING_OPTIONS.find(opt => opt.id === billingOption);
+    if (!option) return monthlyTotal;
+    
+    const discountMultiplier = 1 - (option.discountPercentage / 100);
+    
+    switch (option.paymentSchedule) {
       case "quarterly":
-        return (annualTotal * 0.95) / 4;
+        return (annualTotal * discountMultiplier) / 4;
       case "annual":
-        return annualTotal * 0.9;
+        return annualTotal * discountMultiplier;
       default:
         return monthlyTotal;
     }
   };
 
   const calculateFirstYearTotal = () => {
+    const billingOpt = BILLING_OPTIONS.find(opt => opt.id === billingOption);
+    const discountMultiplier = billingOpt ? 1 - (billingOpt.discountPercentage / 100) : 1;
+    
     let seatCost;
-    switch (billingOption) {
-      case "quarterly":
-        seatCost = annualTotal * 0.95;
-        break;
-      case "annual":
-        seatCost = annualTotal * 0.9;
-        break;
-      default:
-        seatCost = annualTotal; // Monthly for first year
+    if (billingOpt?.paymentSchedule === "monthly") {
+      seatCost = annualTotal; // Monthly for first year
+    } else {
+      seatCost = annualTotal * discountMultiplier;
     }
+    
     const subtotal = seatCost + signingFee + deliverablesTotal;
     
     // Apply payment method fees
-    if (paymentMethod === "ach") {
-      return subtotal + 5;
-    } else if (paymentMethod === "credit") {
-      return subtotal * 1.03;
+    const paymentOpt = PAYMENT_METHODS.find(method => method.id === paymentMethod);
+    if (!paymentOpt) return subtotal;
+    
+    if (paymentOpt.feeType === "fixed") {
+      return subtotal + paymentOpt.feeAmount;
+    } else if (paymentOpt.feeType === "percentage") {
+      return subtotal * (1 + paymentOpt.feeAmount / 100);
     }
+    
     return subtotal;
   };
 
@@ -106,14 +83,8 @@ export default function PricingCalculator() {
   };
 
   const getSavings = () => {
-    switch (billingOption) {
-      case "quarterly":
-        return annualTotal * 0.05;
-      case "annual":
-        return annualTotal * 0.1;
-      default:
-        return 0;
-    }
+    const option = BILLING_OPTIONS.find(opt => opt.id === billingOption);
+    return option ? annualTotal * (option.discountPercentage / 100) : 0;
   };
 
   return (
@@ -198,7 +169,7 @@ export default function PricingCalculator() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {deliverables.map((deliverable) => (
+                  {DELIVERABLES.map((deliverable) => (
                     <div
                       key={deliverable.id}
                       className={`flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer ${
@@ -276,39 +247,25 @@ export default function PricingCalculator() {
                   <div>
                     <div className="text-sm font-medium text-muted-foreground mb-3">Payment Method</div>
                     <div className="space-y-2">
-                      <div 
-                        className={`border rounded-lg p-3 cursor-pointer transition-colors ${
-                          paymentMethod === "ach" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                        }`}
-                        onClick={() => setPaymentMethod("ach")}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="font-medium text-foreground text-sm">ACH Transfer</div>
-                            <div className="text-xs text-muted-foreground">$5 processing fee</div>
-                          </div>
-                          <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
-                            {paymentMethod === "ach" && <div className="w-2 h-2 bg-primary rounded-full"></div>}
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div 
-                        className={`border rounded-lg p-3 cursor-pointer transition-colors ${
-                          paymentMethod === "credit" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                        }`}
-                        onClick={() => setPaymentMethod("credit")}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="font-medium text-foreground text-sm">Credit Card</div>
-                            <div className="text-xs text-muted-foreground">3% processing fee</div>
-                          </div>
-                          <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
-                            {paymentMethod === "credit" && <div className="w-2 h-2 bg-primary rounded-full"></div>}
+                      {PAYMENT_METHODS.map((method) => (
+                        <div 
+                          key={method.id}
+                          className={`border rounded-lg p-3 cursor-pointer transition-colors ${
+                            paymentMethod === method.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                          }`}
+                          onClick={() => setPaymentMethod(method.id)}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="font-medium text-foreground text-sm">{method.name}</div>
+                              <div className="text-xs text-muted-foreground">{method.description}</div>
+                            </div>
+                            <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
+                              {paymentMethod === method.id && <div className="w-2 h-2 bg-primary rounded-full"></div>}
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -316,32 +273,23 @@ export default function PricingCalculator() {
                 <div className="space-y-4">
                   <div className="text-sm font-medium text-muted-foreground mb-2">Billing Options</div>
                   
-                  <div className={`border rounded-lg p-3 cursor-pointer transition-colors ${
-                    billingOption === "monthly" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                  }`} onClick={() => setBillingOption("monthly")}>
-                    <div className="font-medium text-foreground text-sm">Monthly Pricing</div>
-                    <div className="text-lg font-bold text-foreground">
-                      ${monthlyTotal.toLocaleString()}/month
+                  {BILLING_OPTIONS.map((option) => (
+                    <div 
+                      key={option.id}
+                      className={`border rounded-lg p-3 cursor-pointer transition-colors ${
+                        billingOption === option.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                      }`} 
+                      onClick={() => setBillingOption(option.id)}
+                    >
+                      <div className="font-medium text-foreground text-sm">
+                        {option.name}
+                        {option.discountPercentage > 0 && ` (${option.discountPercentage}% off)`}
+                      </div>
+                      <div className="text-lg font-bold text-foreground">
+                        ${Math.round(calculateBillingAmount()).toLocaleString()}/{option.paymentSchedule === "quarterly" ? "quarter" : option.paymentSchedule === "annual" ? "year" : "month"}
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className={`border rounded-lg p-3 cursor-pointer transition-colors ${
-                    billingOption === "quarterly" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                  }`} onClick={() => setBillingOption("quarterly")}>
-                    <div className="font-medium text-foreground text-sm">Quarterly (5% off)</div>
-                    <div className="text-lg font-bold text-foreground">
-                      ${Math.round((annualTotal * 0.95) / 4).toLocaleString()}/quarter
-                    </div>
-                  </div>
-                  
-                  <div className={`border rounded-lg p-3 cursor-pointer transition-colors ${
-                    billingOption === "annual" ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                  }`} onClick={() => setBillingOption("annual")}>
-                    <div className="font-medium text-foreground text-sm">Annual (10% off)</div>
-                    <div className="text-lg font-bold text-foreground">
-                      ${(annualTotal * 0.9).toLocaleString()}/year
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 <div>
@@ -351,7 +299,9 @@ export default function PricingCalculator() {
                       ${Math.round(calculateFirstYearTotal()).toLocaleString()}
                     </div>
                     <div className="text-xs opacity-75 mt-1">
-                      Seats + Setup + Deliverables + {paymentMethod === "ach" ? "ACH Fee" : "3% CC Fee"}
+                      Seats + Setup + Deliverables + {
+                        PAYMENT_METHODS.find(m => m.id === paymentMethod)?.name || "Payment Fee"
+                      }
                     </div>
                   </div>
                   
