@@ -1,3 +1,5 @@
+![Open Graph image](client/public/images/OG.png)
+
 # Enterprise Pricing Calculator - Developer Guide
 
 ### Prerequisites
@@ -20,13 +22,24 @@
    bun install
    ```
 
-3. **Set up environment variables**
+3. **Modify the pricing config**
 
-   ```bash
-   # Create .env file
-   DATABASE_URL=postgresql://username:password@localhost:5432/enterprise_calculator
-   NODE_ENV=development
-   ```
+   All pricing settings, deliverables, billing options, and payment methods are centrally configured in `shared/pricing-config.ts`. This file is the single source of truth for all pricing-related configurations.
+
+#### Core Pricing Constants
+
+```typescript
+export const MINIMUM_SEATS = 10; // Minimum seats required
+export const SETUP_TRAINING_FEE = 10000; // Mandatory setup fee
+export const SIGNING_FEE_PERCENTAGE = 10; // 10% of annual seat cost
+const base_price = 300; // Base price per seat per month (see tiered pricing below)
+
+// Tiered seat pricing (monthly per seat):
+// 6-15 seats: $340
+// 16-20 seats: $320
+// 21-30 seats: $300
+// 31+ seats: $280
+```
 
 4. **Start development server**
    ```bash
@@ -34,21 +47,6 @@
    ```
 
 The application will be available at `http://localhost:5000`
-
-## ⚙️ Configuration Guide
-
-### Central Configuration: `shared/pricing-config.ts`
-
-All pricing settings, deliverables, billing options, and payment methods are centrally configured in `shared/pricing-config.ts`. This file is the single source of truth for all pricing-related configurations.
-
-#### Core Pricing Constants
-
-```typescript
-export const SEAT_PRICE_MONTHLY = 100; // Base price per seat per month
-export const MINIMUM_SEATS = 30; // Minimum seats required
-export const SETUP_TRAINING_FEE = 5000; // Mandatory setup fee
-export const SIGNING_FEE_PERCENTAGE = 10; // 10% of annual seat cost
-```
 
 #### Adding New Deliverables
 
